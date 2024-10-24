@@ -25,7 +25,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: "jonathanCS-org/called-repo"
-        token: ${{secrets.token}}
+        token: ${{secrets.GITHUB_TOKEN}}
         ref: main
     - name: Find and replace repo version
       run: |
