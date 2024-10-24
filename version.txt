@@ -1,1 +1,1 @@
-caller/module?ref=v1.0.0
+caller-repo/module?ref=v1.0.0

@@ -34,7 +34,7 @@ jobs:
         VERSION="${{ inputs.version }}"
 
         # Find and replace any occurrences of <repo>/module?ref=<old-version> with <repo>/module?ref=<new-version>
-        find . -type f -name "*.txt" -exec sed -i "s|\(${REPO}/module?ref=\)[^&]*|\1${VERSION}|g" {} +
+        find . -type f -name "*.txt" -exec sed -i "s|${REPO}/module?ref=[^&]*|${REPO}/module?ref=${VERSION}|g" {} +
     - name: Output updated file
       run: |
        cat version.txt
