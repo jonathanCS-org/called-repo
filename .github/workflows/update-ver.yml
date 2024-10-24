@@ -45,7 +45,7 @@ jobs:
        git checkout -b chore/update-version 
        git add .
        git commit -m "version update"
-       git push
+       git push --set-upstream origin chore/update-version
       env:
         GITHUB_TOKEN: ${{ secrets.token }}
     - name: Create pull request
