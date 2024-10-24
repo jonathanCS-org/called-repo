@@ -38,6 +38,16 @@ jobs:
     - name: Output updated file
       run: |
        cat version.txt
+    - name: Create branch and check it out
+      run: |
+       git config --global user.name 'GitHub Actions'
+       git config --global user.email 'githubaction@github.com'
+       git checkout -b chore/update-version 
+       git add .
+       git commit -m "version update"
+       git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.token }}
     - name: Create pull request
       run: gh pr create -B main -H chore/update-version --title 'Merge chore/update-version into main' --body 'Created by Github action'
       env:
