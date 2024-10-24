@@ -23,6 +23,10 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        repository: "called-repo"
+        token: ${{secrets.token}}
+        ref: main
     - name: Find and replace repo version
       run: |
         # Variables
