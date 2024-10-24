@@ -1,0 +1,41 @@
+name: Reusable workflow example
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      repo:
+        required: true
+        type: string
+    secrets:
+      token:
+        required: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Find and replace repo version
+      run: |
+        # Variables
+        REPO="${{ inputs.repo }}"
+        VERSION="${{ inputs.version }}"
+
+        # Find and replace any occurrences of <repo>/module?ref=<old-version> with <repo>/module?ref=<new-version>
+        find . -type f -name "*.txt" -exec sed -i "s|\(${REPO}/module?ref=\)[^&]*|\1${VERSION}|g" {} +
+
+    - name: Commit changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add .
+        git commit -m "Updated ${REPO} to version ${VERSION}"
+        git push
