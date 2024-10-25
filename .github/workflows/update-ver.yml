@@ -9,6 +9,10 @@ on:
       repo:
         required: true
         type: string
+    outputs:
+      version: 
+        description: "The input version passed back to the output"
+        value: ${{ jobs.update-version.outputs.version }}
     secrets:
       token:
         required: true
@@ -20,6 +24,8 @@ permissions:
 jobs:
   update-version:
     runs-on: ubuntu-latest
+    outputs: 
+      version: ${{inputs.version}}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -29,15 +35,8 @@ jobs:
         ref: main
     - name: Find and replace repo version
       run: |
-        # Variables
-        REPO="${{ inputs.repo }}"
-        VERSION="${{ inputs.version }}"
-
         # Find and replace any occurrences of <repo>//module?ref=<old-version> with <repo>//module?ref=<new-version>
         find . -type f -name "*.tf" -exec sed -i 's|source = "git@github.com:jonathanCS-org/${{ inputs.repo }}//\(.*\)?ref=.*"|source = "git@github.com:jonathanCS-org/${{ inputs.repo }}//\1?ref=${{ inputs.version }}"|' {} +
-    - name: Output updated file
-      run: |
-       cat main.tf
     - name: Create branch and check it out
       run: |
        git config --global user.name 'GitHub Actions'
