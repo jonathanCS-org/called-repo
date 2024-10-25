@@ -18,8 +18,19 @@ permissions:
   pull-requests: write
 
 jobs:
+  create-release:
+    name: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   update-version:
     runs-on: ubuntu-latest
+    needs: create-release
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
