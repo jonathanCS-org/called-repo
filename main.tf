@@ -1,3 +1,3 @@
 module "test" {
-    source = "git@github.com:jonathanCS-org/caller-repo//keycloak-test?ref=v1.3.0"
+    source = "git@github.com:jonathanCS-org/caller-repo//keycloak-test?ref=v0.0.1"
 }

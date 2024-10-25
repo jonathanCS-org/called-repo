@@ -34,10 +34,10 @@ jobs:
         VERSION="${{ inputs.version }}"
 
         # Find and replace any occurrences of <repo>//module?ref=<old-version> with <repo>//module?ref=<new-version>
-        find . -type f -name "*.tf" -exec sed -i 's|source = "git@github.com:jonathanCS-org/${REPO}//\(.*\)?ref=.*"|source = "git@github.com:jonathanCS-org/${REPO}//\1?ref=${VERSION}"|' {} +
+        find . -type f -name "*.tf" -exec sed -i 's|source = "git@github.com:jonathanCS-org/${{ inputs.repo }}//\(.*\)?ref=.*"|source = "git@github.com:jonathanCS-org/${{ inputs.repo }}//\1?ref=${{ inputs.version }}"|' {} +
     - name: Output updated file
       run: |
-       cat version.txt
+       cat main.tf
     - name: Create branch and check it out
       run: |
        git config --global user.name 'GitHub Actions'
