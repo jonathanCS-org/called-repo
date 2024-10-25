@@ -33,7 +33,7 @@ jobs:
         REPO="${{ inputs.repo }}"
         VERSION="${{ inputs.version }}"
 
-        # Find and replace any occurrences of <repo>/module?ref=<old-version> with <repo>/module?ref=<new-version>
+        # Find and replace any occurrences of <repo>//module?ref=<old-version> with <repo>//module?ref=<new-version>
         find . -type f -name "*.tf" -exec sed -i 's|source = "git@github.com:jonathanCS-org/${REPO}//\(.*\)?ref=.*"|source = "git@github.com:jonathanCS-org/${REPO}//\1?ref=${VERSION}"|' {} +
     - name: Output updated file
       run: |
@@ -42,13 +42,13 @@ jobs:
       run: |
        git config --global user.name 'GitHub Actions'
        git config --global user.email 'githubaction@github.com'
-       git checkout -b chore/update-version 
+       git checkout -b chore/update-to-${{inputs.version}}
        git add .
        git commit -m "version update"
-       git push --set-upstream origin chore/update-version
+       git push --set-upstream origin chore/update-to-${{inputs.version}}
       env:
         GITHUB_TOKEN: ${{ secrets.token }}
     - name: Create pull request
-      run: gh pr create -B main -H chore/update-version --title 'Merge chore/update-version into main' --body 'Created by Github action'
+      run: gh pr create -B main -H chore/update-to-${{inputs.version}} --title 'Merge chore/update-to-${{inputs.version}} into main' --body 'Created by Github action'
       env:
         GITHUB_TOKEN: ${{ secrets.token }}
